@@ -1,65 +1,17 @@
 .bnt{
-  height: 9%;
-  width: 100%;
-  display: inline-block;
   .topbnt_left{
-    width: 33%;
     ul{
-      padding-top: 38px;
-      padding-left: 10%;
-      width: 100%;
-    }
-    li{
-      background: url(../../img/bnt.png) center;
-      font-size: 14px;
-      line-height: 33px;
-      background-repeat: no-repeat;
-      width: 18%;
-      height: 35px;
-      float: left;
-      text-align: center;
-      margin-left: 1%;
-      a{
-        text-decoration: none;
-        color: #fff;
-      }
-    }
-    li.active{
-      background: url(../../img/bntactive.png) no-repeat center;
-    }
-  }
-  .fl{
-    float: left;
-  }
-  .tith1 {
-    width: 33%;
-    text-align: center;
-    padding-top: 16px;
-    font-weight: bold;
-    letter-spacing: 8px;
-    font-size: 32px;
-  }
-  .topbnt_right {
-    padding-top: 2%;
-    padding-right: 2.5%;
-    width: 27%;
-    li{
-      background: url(../../img/bnt.png) center;
-      font-size: 14px;
-      line-height: 33px;
-      background-repeat: no-repeat;
-      width: 22%;
-      height: 35px;
-      float: right;
-      text-align: center;
-      margin-right: 1%;
-      a{
-        text-decoration: none;
-        color: #fff;
+      display: flex;
+      li{
+        margin: 0 3% 0 0;
       }
     }
   }
-  .fr{
-    float: right;
+  .topbnt_right{
+    ul{
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+    }
   }
 }

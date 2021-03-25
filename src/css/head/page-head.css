@@ -1,0 +1,12 @@
+.bnt .topbnt_left ul {
+  display: flex;
+}
+.bnt .topbnt_left ul li {
+  margin: 0 3% 0 0;
+}
+.bnt .topbnt_right ul {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+/*# sourceMappingURL=page-head.css.map */

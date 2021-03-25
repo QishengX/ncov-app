@@ -7,7 +7,6 @@ import Center from "../center/center";
 import Right from "../right/right";
 
 import '../../css/style.css';
-// import 'bootstrap/dist/css/bootstrap.css'
 import '../../css/app/app.css'
 
 
@@ -18,8 +17,8 @@ export default class App extends Component{
         return(
             <div className="wpbox">
                 <PageHead />
-                <Left/>
                 <div className="mrbox">
+                    <Left/>
                     <Center/>
                     <Right/>
                 </div>
