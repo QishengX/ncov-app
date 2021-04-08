@@ -12,11 +12,24 @@ import '../../css/app/app.css'
 
 
 export default class App extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            myWidth: window.innerWidth
+        };
+    }
+
+    isWidthChange = () =>{
+        if(window.innerWidth !== this.state.myWidth){
+            this.setState({myWidth: window.innerWidth});
+        }
+    };
 
     render() {
         return(
-            <div className="wpbox">
-                <PageHead />
+            // <div className="wpbox" onMouseOut={this.isWidthChange}>
+            <div className="wpbox" onMouseOut={this.isWidthChange}>
+                <PageHead/>
                 <div className="mrbox">
                     <Left/>
                     <Center/>
