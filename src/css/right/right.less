@@ -1,3 +1,35 @@
 .mrbox_top_right{
   width: 23%;
+  .arightboxtop{
+    overflow: scroll;
+    //overflow-x: hidden;
+    //overflow-y: auto;
+    &::-webkit-scrollbar{width: 0}
+    padding: 0 30px;
+    li{
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 8px;
+      border-bottom: 1px #9dcaef dashed;
+      span{
+        display: inline-block;
+        width: 20%;
+        text-align: center;
+      }
+      .order{
+        border: 1px solid white;
+        border-radius: 45px 5px;
+        background-color: #369e46;
+      }
+    }
+    li:nth-child(-n+7){
+      .order{
+        border: 1px solid white;
+        border-radius: 45px 5px;
+        background-color: #ff3812;
+      }
+    }
+  }
 }

@@ -58,7 +58,14 @@ export default class News extends Component{
                 <ul id="news" className="news" onMouseOut={this.Up} onMouseOver={this.Stop}>
                     {
                         news.map((item, index) => {
-                            return <li key={index}><a href={item["sourceUrl"]} target="_blank">{item["summary"]}</a></li>
+                            return(
+                                <li key={index}>
+                                    <a href={item["sourceUrl"]} target="_blank">
+                                        <span className="title">{item["title"]}</span>
+                                        <span className="time">{item["time"]}</span>
+                                    </a>
+                                </li>
+                            )
                         })
                     }
                 </ul>

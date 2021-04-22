@@ -1,81 +1,23 @@
 import React, {Component} from 'react';
 import * as echarts from 'echarts';
+import axios from "axios";
 
 import MyEchart from "../charts/my_echart";
 import News from "../news/news";
 
 import '../../css/right/right.css'
 import DataChange from "../changes/data_change";
+import Bootstraptab from "../bootstrap_table/Bootstraptab";
 
 export default class Right extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            option1: {
-                color: ['#7ecef4'],
-                backgroundColor: 'rgba(1,202,217,.2)',
-                grid: {
-                    left: 20,
-                    right: 50,
-                    top: 23,
-                    bottom: 30,
-                    containLabel: true
-                },
-
-                xAxis: {
-                    type: 'value',
-                    axisLine: {
-                        lineStyle: {
-                            color: 'rgba(255,255,255,.2)'
-                        }
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: 'rgba(255,255,255,0)'
-                        }
-                    },
-                    axisLabel: {
-                        color: "rgba(255,255,255,1)"
-                    },
-                    data: ['1000', '5000', '10000', '15000', '20000', '25000'],
-                    boundaryGap: [0, 0.01]
-                },
-                yAxis: {
-                    type: 'category',
-                    axisLine: {
-                        lineStyle: {
-                            color: 'rgba(255,255,255,.5)'
-                        }
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: 'rgba(255,255,255,.1)'
-                        }
-                    },
-                    axisLabel: {
-                        color: "rgba(255,255,255,.5)"
-                    },
-                    data: ['C2', 'C1', 'B2', 'B1', 'A3', 'A2', 'A1']
-                },
-                series: [
-                    {
-                        name: '2011年',
-                        type: 'bar',
-                        barWidth: 30,
-                        itemStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(
-                                    1, 0, 0, 1,
-                                    [
-                                        {offset: 0, color: 'rgba(230,253,139,.7)'},
-                                        {offset: 1, color: 'rgba(41,220,205,.7)'}
-                                    ]
-                                )
-                            }
-                        },
-                        data: [18203, 23489, 29034, 18203, 23489, 29034, 29034]
-                    }
-                ]
+            currentNcovData: {
+                currentConfirmedCount: [],
+                suspectedCount: [],
+                deadCount: [],
+                provinceName: []
             },
             option2: {
                 // backgroundColor: '#fff',
@@ -105,107 +47,49 @@ export default class Right extends Component{
                             shadowColor: '#333'
                         }
                     },
-                    data: [
-                        {
-                            name: 'Sam S Club',
-                            value: 8124,
-                            textStyle: {
-                                color: 'black'
-                            },
-                            emphasis: {
-                                textStyle: {
-                                    color: 'red'
-                                }
-                            }
-                        },
-                        {
-                            name: 'Macys',
-                            value: 6181
-                        },
-                        {
-                            name: 'Amy Schumer',
-                            value: 4386
-                        },
-                        {
-                            name: 'Jurassic World',
-                            value: 4055
-                        },
-                        {
-                            name: 'Charter Communications',
-                            value: 2467
-                        },
-                        {
-                            name: 'Chick Fil A',
-                            value: 2244
-                        },
-                        {
-                            name: 'Planet Fitness',
-                            value: 1898
-                        },
-                        {
-                            name: 'Pitch Perfect',
-                            value: 1484
-                        },
-                        {
-                            name: 'Express',
-                            value: 1112
-                        },
-                        {
-                            name: 'Home',
-                            value: 965
-                        },
-                        {
-                            name: 'Johnny Depp',
-                            value: 847
-                        },
-                        {
-                            name: 'Lena Dunham',
-                            value: 582
-                        },
-                        {
-                            name: 'Lewis Hamilton',
-                            value: 555
-                        },
-                        {
-                            name: 'KXAN',
-                            value: 550
-                        },
-                        {
-                            name: 'Mary Ellen Mark',
-                            value: 462
-                        },
-                        {
-                            name: 'Farrah Abraham',
-                            value: 366
-                        },
-                        {
-                            name: 'Rita Ora',
-                            value: 360
-                        },
-                        {
-                            name: 'Serena Williams',
-                            value: 282
-                        },
-                        {
-                            name: 'NCAA baseball tournament',
-                            value: 273
-                        },
-                        {
-                            name: 'Point Break',
-                            value: 265
-                        }
-                    ]
+                    data: [{'name': '肺炎', 'value': 2889}, {'name': '武汉', 'value': 1340}, {'name': '不明', 'value': 886}, {'name': '原因', 'value': 838}, {'name': '冠状病毒', 'value': 743}, {'name': '新型', 'value': 741}, {'name': '病例', 'value': 680}, {'name': '患者', 'value': 655}, {'name': '感染', 'value': 529}, {'name': '出院', 'value': 418}, {'name': '没有', 'value': 410}, {'name': '医院', 'value': 381}, {'name': '发现', 'value': 375}, {'name': '武汉市', 'value': 360}, {'name': '病毒性', 'value': 332}, {'name': '孩子', 'value': 330}, {'name': '自己', 'value': 289}, {'name': '今天', 'value': 275}, {'name': '医生', 'value': 273}, {'name': '治愈', 'value': 268}, {'name': '我们', 'value': 262}, {'name': '死亡', 'value': 260}, {'name': '咳嗽', 'value': 252}, {'name': '一个', 'value': 239}, {'name': '网页', 'value': 238}, {'name': '什么', 'value': 226}, {'name': '健康', 'value': 213}, {'name': '病毒', 'value': 212}, {'name': '治疗', 'value': 212}, {'name': '目前', 'value': 211}, {'name': '感冒', 'value': 211}, {'name': '希望', 'value': 210}, {'name': '##', 'value': 209}, {'name': '还是', 'value': 207}, {'name': '接受', 'value': 200}, {'name': '报告', 'value': 199}, {'name': '知道', 'value': 198}, {'name': '现在', 'value': 198}, {'name': '新增', 'value': 197}, {'name': '时候', 'value': 195}, {'name': '真的', 'value': 187}, {'name': '疫苗', 'value': 186}, {'name': '疫情', 'value': 182}, {'name': '排除', 'value': 181}, {'name': '流感', 'value': 180}, {'name': '可以', 'value': 180}, {'name': '情况', 'value': 179}, {'name': '就是', 'value': 175}, {'name': '出现', 'value': 173}, {'name': '已经', 'value': 170}, {'name': '妈妈', 'value': 170}, {'name': '微博', 'value': 169}, {'name': '开始', 'value': 164}, {'name': 'SARS', 'value': 163}, {'name': '发烧', 'value': 163}, {'name': '医学观察', 'value': 163}, {'name': '这个', 'value': 162}, {'name': '住院', 'value': 161}, {'name': '宝宝', 'value': 161}, {'name': '重症', 'value': 161}, {'name': '疾病', 'value': 161}, {'name': '可能', 'value': 155}, {'name': '密切接触', 'value': 155}, {'name': '2020', 'value': 153}, {'name': '相关', 'value': 153}, {'name': '通报', 'value': 152}, {'name': '新闻', 'value': 148}, {'name': '隔离', 'value': 147}, {'name': '中国', 'value': 145}, {'name': '因为', 'value': 139}, {'name': '累计', 'value': 139}, {'name': '严重', 'value': 138}, {'name': '卫健委', 'value': 138}, {'name': '香港', 'value': 138}, {'name': '病情', 'value': 137}, {'name': '症状', 'value': 135}, {'name': '卫生', 'value': 132}, {'name': '问题', 'value': 129}, {'name': '一直', 'value': 129}, {'name': '确诊', 'value': 129}, {'name': '泰国', 'value': 129}, {'name': '病原体', 'value': 128}, {'name': '12', 'value': 128}, {'name': '不是', 'value': 127}, {'name': '专家', 'value': 124}, {'name': '不要', 'value': 123}, {'name': '病原', 'value': 123}, {'name': '口罩', 'value': 122}, {'name': '医疗机构', 'value': 122}, {'name': '发热', 'value': 119}, {'name': '晚上', 'value': 118}, {'name': '起来', 'value': 118}, {'name': '不能', 'value': 116}, {'name': '大家', 'value': 115}, {'name': '一天', 'value': 114}, {'name': '结果', 'value': 114}, {'name': '一起', 'value': 113}, {'name': '13', 'value': 110}, {'name': '怎么', 'value': 110}, {'name': '稳定', 'value': 108}, {'name': '但是', 'value': 106}, {'name': '最后', 'value': 105}, {'name': '工作', 'value': 104}, {'name': '一下', 'value': 102}, {'name': '截至', 'value': 102}, {'name': '预防', 'value': 101}, {'name': '还有', 'value': 99}, {'name': '呼吸道', 'value': 99}, {'name': '视频', 'value': 98}, {'name': '2019', 'value': 98}, {'name': '之前', 'value': 97}, {'name': '诊断', 'value': 97}, {'name': '41', 'value': 97}, {'name': '初步', 'value': 96}, {'name': '其余', 'value': 96}, {'name': '时间', 'value': 95}, {'name': '觉得', 'value': 94}, {'name': '需要', 'value': 94}, {'name': '追踪', 'value': 94}, {'name': '进行', 'value': 93}, {'name': '所以', 'value': 91}, {'name': '感觉', 'value': 90}, {'name': '引起', 'value': 90}, {'name': '然后', 'value': 88}, {'name': '回家', 'value': 87}, {'name': '围观', 'value': 86}, {'name': '生病', 'value': 84}, {'name': '检测', 'value': 82}, {'name': '关于', 'value': 82}, {'name': '一定', 'value': 81}, {'name': '检查', 'value': 81}, {'name': '不会', 'value': 81}, {'name': '这么', 'value': 80}, {'name': '导致', 'value': 80}, {'name': '病人', 'value': 80}, {'name': '有点', 'value': 79}, {'name': '传染病', 'value': 79}, {'name': '传人', 'value': 78}, {'name': '注意', 'value': 77}, {'name': '回来', 'value': 77}, {'name': '那么', 'value': 76}, {'name': '这种', 'value': 76}, {'name': '几天', 'value': 76}, {'name': '24', 'value': 76}, {'name': '最新', 'value': 75}, {'name': '身体', 'value': 75}, {'name': '小时', 'value': 75}, {'name': '如果', 'value': 74}, {'name': '特别', 'value': 74}, {'name': '来自', 'value': 74}, {'name': '其中', 'value': 74}, {'name': '市场', 'value': 73}, {'name': '很多', 'value': 73}, {'name': '我市', 'value': 73}, {'name': '分享', 'value': 73}, {'name': '最近', 'value': 72}, {'name': '国家', 'value': 72}, {'name': '免费', 'value': 72}, {'name': '发病', 'value': 71}, {'name': '明天', 'value': 70}, {'name': '生活', 'value': 68}, {'name': '看到', 'value': 68}, {'name': '应该', 'value': 68}, {'name': '持续', 'value': 68}, {'name': '他们', 'value': 68}, {'name': '终于', 'value': 68}, {'name': '输液', 'value': 68}, {'name': '一种', 'value': 67}, {'name': '表示', 'value': 66}, {'name': '担心', 'value': 66}, {'name': '日本', 'value': 66}, {'name': '不好', 'value': 66}, {'name': '主要', 'value': 66}, {'name': '发布', 'value': 65}, {'name': '。#', 'value': 65}, {'name': '个案', 'value': 65}, {'name': '虽然', 'value': 64}, {'name': '海鲜', 'value': 63}, {'name': '呼吸', 'value': 62}, {'name': '委员会', 'value': 62}, {'name': '这次', 'value': 61}, {'name': '一次', 'value': 61}, {'name': '过年', 'value': 61}, {'name': '华南', 'value': 61}, {'name': '11', 'value': 61}, {'name': '体温', 'value': 60}, {'name': '建议', 'value': 60}, {'name': '一样', 'value': 60}, {'name': '每天', 'value': 60}, {'name': '救治', 'value': 60}, {'name': '一点', 'value': 59}, {'name': '出来', 'value': 59}, {'name': '两个', 'value': 59}, {'name': '发生', 'value': 59}, {'name': '解除', 'value': 59}, {'name': '关注', 'value': 58}, {'name': '两天', 'value': 58}, {'name': '717', 'value': 58}, {'name': '世界', 'value': 57}, {'name': '其实', 'value': 57}, {'name': '763', 'value': 57}, {'name': '疑似', 'value': 57}, {'name': '信息', 'value': 56}, {'name': '睡觉', 'value': 56}, {'name': '吃药', 'value': 56}, {'name': '调查', 'value': 56}, {'name': '其他', 'value': 56}, {'name': '这样', 'value': 55}, {'name': '接种', 'value': 55}, {'name': '中心', 'value': 54}, {'name': '儿子', 'value': 54}, {'name': '传染', 'value': 52}, {'name': '10', 'value': 52}, {'name': '认为', 'value': 52}, {'name': '继续', 'value': 52}, {'name': '今年', 'value': 52}, {'name': '科普', 'value': 51}, {'name': '判定', 'value': 51}, {'name': '定点', 'value': 51}, {'name': '通过', 'value': 51}, {'name': '容易', 'value': 50}, {'name': '老师', 'value': 50}, {'name': '一切', 'value': 49}, {'name': '正常', 'value': 49}, {'name': '临床', 'value': 49}, {'name': '这些', 'value': 49}, {'name': '第一次', 'value': 49}, {'name': '组织', 'value': 49}, {'name': '公司', 'value': 49}, {'name': '地方', 'value': 49}, {'name': '专家组', 'value': 49}, {'name': '常见', 'value': 49}, {'name': '回答', 'value': 48}, {'name': '突然', 'value': 48}, {'name': '看着', 'value': 48}, {'name': '临床表现', 'value': 48}, {'name': '看看', 'value': 47}, {'name': '之后', 'value': 47}, {'name': '第二例', 'value': 47}, {'name': '朋友', 'value': 47}, {'name': '如何', 'value': 47}, {'name': '好好', 'value': 47}, {'name': '下午', 'value': 47}, {'name': '国内', 'value': 46}, {'name': '消息', 'value': 46}, {'name': '17', 'value': 46}, {'name': '是不是', 'value': 46}, {'name': '一年', 'value': 46}, {'name': '风险', 'value': 46}, {'name': '结合', 'value': 46}, {'name': '平安', 'value': 46}, {'name': '收治', 'value': 46}, {'name': '心疼', 'value': 46}, {'name': '只是', 'value': 46}, {'name': '为什么', 'value': 46}, {'name': '而且', 'value': 45}, {'name': '只有', 'value': 45}, {'name': '解读', 'value': 45}, {'name': '以后', 'value': 45}, {'name': '央视', 'value': 45}, {'name': '了解', 'value': 45}, {'name': '谣言', 'value': 45}, {'name': '家里', 'value': 44}, {'name': '照顾', 'value': 44}, {'name': '这是', 'value': 44}, {'name': '鉴定', 'value': 44}, {'name': '世卫', 'value': 44}, {'name': '事情', 'value': 43}, {'name': '非常', 'value': 43}, {'name': '出门', 'value': 43}, {'name': '不想', 'value': 43}, {'name': '一名', 'value': 43}, {'name': '所有', 'value': 43}, {'name': '一些', 'value': 43}, {'name': '15', 'value': 43}, {'name': '你们', 'value': 43}, {'name': '在家', 'value': 43}, {'name': '支原体', 'value': 43}, {'name': '生物', 'value': 43}, {'name': '59', 'value': 43}, {'name': '做好', 'value': 42}, {'name': '连续', 'value': 42}, {'name': '第一', 'value': 42}, {'name': '可是', 'value': 42}, {'name': '重要', 'value': 42}, {'name': '14', 'value': 42}, {'name': '赶紧', 'value': 42}, {'name': '及时', 'value': 42}, {'name': '增至', 'value': 42}, {'name': '链接', 'value': 41}, {'name': '爆发', 'value': 41}, {'name': '报道', 'value': 41}, {'name': '家长', 'value': 41}, {'name': '比较', 'value': 41}, {'name': '当时', 'value': 41}, {'name': '是否', 'value': 41}, {'name': '过去', 'value': 41}, {'name': '或者', 'value': 41}, {'name': '防控', 'value': 40}, {'name': '符合', 'value': 40}, {'name': '引发', 'value': 40}, {'name': '一般', 'value': 40}, {'name': '打针', 'value': 40}, {'name': '观察', 'value': 40}, {'name': '支气管', 'value': 40}, {'name': '护士', 'value': 40}, {'name': '今晚', 'value': 39}, {'name': '老公', 'value': 39}, {'name': '各种', 'value': 39}, {'name': '开心', 'value': 39}, {'name': '真是', 'value': 39}, {'name': '...', 'value': 39}, {'name': '那个', 'value': 39}, {'name': '生命', 'value': 39}, {'name': '高烧', 'value': 39}, {'name': '雾化', 'value': 39}, {'name': '普通', 'value': 38}, {'name': '今日', 'value': 38}, {'name': '早上', 'value': 38}, {'name': '急性', 'value': 38}, {'name': '多少', 'value': 38}, {'name': '由于', 'value': 38}, {'name': '链接#', 'value': 38}, {'name': '喜欢', 'value': 38}, {'name': '正在', 'value': 38}, {'name': '官方', 'value': 37}, {'name': '还好', 'value': 37}, {'name': '后来', 'value': 37}, {'name': '只能', 'value': 37}, {'name': '开展', 'value': 37}, {'name': '价值', 'value': 37}, {'name': '马上', 'value': 37}, {'name': '女儿', 'value': 37}, {'name': '。【', 'value': 37}, {'name': '病原学', 'value': 37}, {'name': '加强', 'value': 37}, {'name': '事件', 'value': 36}, {'name': '男子', 'value': 36}, {'name': '人类', 'value': 36}, {'name': '支气管炎', 'value': 36}, {'name': '甚至', 'value': 36}, {'name': '害怕', 'value': 36}, {'name': '加上', 'value': 36}, {'name': '同时', 'value': 36}, {'name': '非典', 'value': 36}, {'name': '新浪', 'value': 36}, {'name': '经历', 'value': 35}, {'name': '昨天', 'value': 35}, {'name': '舒服', 'value': 35}, {'name': '就要', 'value': 35}, {'name': '到底', 'value': 35}, {'name': '进展', 'value': 35}, {'name': '奶奶', 'value': 35}, {'name': '怎么办', 'value': 35}, {'name': '研究', 'value': 35}, {'name': '腾讯', 'value': 35}, {'name': '厉害', 'value': 35}, {'name': '不用', 'value': 35}, {'name': '婆婆', 'value': 35}, {'name': '下来', 'value': 35}, {'name': '包括', 'value': 35}, {'name': '爸爸', 'value': 35}, {'name': '没事', 'value': 34}, {'name': '别人', 'value': 34}, {'name': '不敢', 'value': 34}, {'name': '卫生部', 'value': 34}, {'name': '中国籍', 'value': 34}, {'name': '感谢', 'value': 34}, {'name': '难受', 'value': 34}, {'name': '明显', 'value': 34}, {'name': '避免', 'value': 34}, {'name': '情况通报', 'value': 34}, {'name': '宝贝', 'value': 33}, {'name': '不过', 'value': 33}, {'name': '以来', 'value': 33}, {'name': '北京', 'value': 33}, {'name': '人民', 'value': 33}, {'name': '的话', 'value': 33}, {'name': '转发', 'value': 33}, {'name': '20', 'value': 33}, {'name': '记者', 'value': 33}, {'name': '姐姐', 'value': 32}, {'name': '上班', 'value': 32}, {'name': '吃饭', 'value': 32}, {'name': '直接', 'value': 32}, {'name': '措施', 'value': 32}, {'name': '公布', 'value': 32}, {'name': '心里', 'value': 32}, {'name': '准备', 'value': 32}, {'name': '首例', 'value': 32}, {'name': '以为', 'value': 32}, {'name': '快点', 'value': 32}, {'name': '要求', 'value': 32}, {'name': '不了', 'value': 32}, {'name': '一周', 'value': 32}, {'name': '疾控中心', 'value': 32}, {'name': '儿童', 'value': 32}, {'name': '东西', 'value': 31}, {'name': '还要', 'value': 31}, {'name': '精神', 'value': 31}, {'name': '妹妹', 'value': 31}, {'name': '有关', 'value': 31}, {'name': '诊疗', 'value': 31}, {'name': '集中', 'value': 31}, {'name': '序列', 'value': 31}, {'name': '确认', 'value': 31}, {'name': '基本', 'value': 31}, {'name': '机场', 'value': 30}, {'name': '女子', 'value': 30}, {'name': '关系', 'value': 30}, {'name': '三天', 'value': 30}, {'name': '抽血', 'value': 30}, {'name': '30', 'value': 30}, {'name': '就诊', 'value': 30}, {'name': '告诉', 'value': 30}, {'name': '腺病毒', 'value': 30}, {'name': '图解', 'value': 30}, {'name': '肺炎球菌', 'value': 30}, {'name': '对于', 'value': 29}, {'name': '多日', 'value': 29}, {'name': '控制', 'value': 29}, {'name': '世界卫生组织', 'value': 29}, {'name': '小孩', 'value': 29}, {'name': '进一步', 'value': 29}, {'name': '影响', 'value': 29}, {'name': '考拉', 'value': 29}, {'name': '怀疑', 'value': 29}, {'name': '作为', 'value': 29}, {'name': '主任', 'value': 29}, {'name': '好转', 'value': 29}, {'name': '病毒感染', 'value': 29}, {'name': '计划', 'value': 29}, {'name': '基因', 'value': 29}, {'name': '小儿', 'value': 29}, {'name': '第二天', 'value': 29}, {'name': '增加', 'value': 29}, {'name': '反应', 'value': 28}, {'name': '市民', 'value': 28}, {'name': '中午', 'value': 28}, {'name': '母亲', 'value': 28}, {'name': '以及', 'value': 28}, {'name': '几个', 'value': 28}, {'name': '关心', 'value': 28}, {'name': '肺部', 'value': 28}, {'name': '有些', 'value': 28}, {'name': '全国', 'value': 28}, {'name': '诊治', 'value': 28}, {'name': '跨年', 'value': 28}, {'name': '一例', 'value': 28}, {'name': '药品', 'value': 28}, {'name': '去世', 'value': 27}, {'name': '本来', 'value': 27}, {'name': '74', 'value': 27}, {'name': '传染性', 'value': 27}, {'name': '好像', 'value': 27}, {'name': '知识', 'value': 27}, {'name': '表现', 'value': 27}, {'name': '性肺炎', 'value': 27}, {'name': '人群', 'value': 27}, {'name': '标准', 'value': 27}, {'name': '得到', 'value': 27}, {'name': '必须', 'value': 26}, {'name': '21', 'value': 26}, {'name': '明确', 'value': 26}, {'name': '保持', 'value': 26}, {'name': '过来', 'value': 26}, {'name': '流鼻涕', 'value': 26}, {'name': '为了', 'value': 26}, {'name': '复查', 'value': 26}, {'name': '客户端', 'value': 26}, {'name': '去年', 'value': 26}, {'name': '通知', 'value': 26}, {'name': '除了', 'value': 26}, {'name': '接触', 'value': 26}, {'name': '湖北省', 'value': 26}, {'name': '季节', 'value': 26}, {'name': '阳性', 'value': 26}, {'name': '网易', 'value': 26}, {'name': '细菌', 'value': 26}, {'name': '应变', 'value': 26}, {'name': '上海', 'value': 26}, {'name': '恐慌', 'value': 25}, {'name': '27', 'value': 25}, {'name': '努力', 'value': 25}, {'name': '视频#', 'value': 25}, {'name': '加油', 'value': 25}, {'name': '家人', 'value': 25}, {'name': '父母', 'value': 25}, {'name': '我妈', 'value': 25}, {'name': '提示', 'value': 25}, {'name': '流行病学', 'value': 25}, {'name': '小朋友', 'value': 25}, {'name': '学校', 'value': 25}, {'name': '日子', 'value': 25}, {'name': '休息', 'value': 25}, {'name': '医疗', 'value': 25}, {'name': '紧张', 'value': 25}, {'name': '武漢', 'value': 25}, {'name': '因此', 'value': 25}, {'name': '安全', 'value': 25}, {'name': '不行', 'value': 25}, {'name': '金银', 'value': 25}, {'name': '启动', 'value': 25}, {'name': '三个', 'value': 25}, {'name': '收到', 'value': 25}, {'name': '啼哭', 'value': 25}, {'name': '最矮', 'value': 24}, {'name': '31', 'value': 24}, {'name': '出去', 'value': 24}, {'name': '心脏', 'value': 24}, {'name': '每次', 'value': 24}, {'name': '结束', 'value': 24}, {'name': '实在', 'value': 24}, {'name': '身边', 'value': 24}, {'name': '湖北', 'value': 24}, {'name': '以上', 'value': 24}, {'name': '16', 'value': 24}, {'name': '大悲咒', 'value': 24}, {'name': '阴阳', 'value': 24}, {'name': '竟然', 'value': 23}, {'name': '任何', 'value': 23}, {'name': '快乐', 'value': 23}, {'name': '多月', 'value': 23}, {'name': '39', 'value': 23}, {'name': '坚持', 'value': 23}, {'name': '好多', 'value': 23}, {'name': '尚未', 'value': 23}, {'name': '有人', 'value': 23}, {'name': '家庭', 'value': 23}, {'name': '健健康康', 'value': 23}, {'name': '40', 'value': 23}, {'name': '两次', 'value': 23}, {'name': '身上', 'value': 23}, {'name': '综合征', 'value': 23}, {'name': '跟着', 'value': 23}, {'name': '经常', 'value': 23}, {'name': '状态', 'value': 23}, {'name': '当天', 'value': 23}, {'name': '取得', 'value': 23}, {'name': '个人', 'value': 23}, {'name': '链接【', 'value': 23}, {'name': '病因', 'value': 23}, {'name': '级别', 'value': 23}, {'name': '新加坡', 'value': 23}, {'name': '热点', 'value': 23}, {'name': '旅行', 'value': 23}, {'name': '再次', 'value': 23}, {'name': '注册', 'value': 23}, {'name': '回去', 'value': 22}, {'name': '18', 'value': 22}, {'name': '反复', 'value': 22}, {'name': '是因为', 'value': 22}, {'name': '！#', 'value': 22}, {'name': '证据', 'value': 22}, {'name': '嗓子', 'value': 22}, {'name': '衣服', 'value': 22}, {'name': '轻微', 'value': 22}, {'name': '来说', 'value': 22}, {'name': '方面', 'value': 22}, {'name': '转入', 'value': 22}, {'name': '育儿', 'value': 22}, {'name': '不到', 'value': 22}, {'name': '46', 'value': 22}, {'name': '获得', 'value': 22}, {'name': '简单', 'value': 22}, {'name': '近期', 'value': 22}, {'name': '应对', 'value': 22}, {'name': '旅客', 'value': 22}, {'name': '冬季', 'value': 22}, {'name': '禽流感', 'value': 22}, {'name': '可怕', 'value': 22}, {'name': '半个', 'value': 22}, {'name': '现象', 'value': 22}, {'name': '入院', 'value': 22}, {'name': '深圳', 'value': 22}, {'name': '尤哥', 'value': 22}, {'name': '美国', 'value': 21}, {'name': 'Magar', 'value': 21}, {'name': '正式', 'value': 21}, {'name': '上午', 'value': 21}, {'name': '长大', 'value': 21}, {'name': '同事', 'value': 21}, {'name': '记得', 'value': 21}, {'name': '早点', 'value': 21}, {'name': '越来越', 'value': 21}, {'name': '拍片', 'value': 21}, {'name': '一会', 'value': 21}, {'name': '急诊', 'value': 21}, {'name': '完成', 'value': 21}, {'name': '有限', 'value': 21}, {'name': '退烧', 'value': 21}, {'name': '食物', 'value': 21}, {'name': '部门', 'value': 21}, {'name': '粉丝', 'value': 21}, {'name': '效果', 'value': 21}, {'name': '声音', 'value': 21}, {'name': '恢复', 'value': 21}, {'name': '发展', 'value': 21}, {'name': '减少', 'value': 21}, {'name': '睡着', 'value': 21}, {'name': '全球', 'value': 21}, {'name': '弟弟', 'value': 21}, {'name': '后均', 'value': 21}, {'name': '以下', 'value': 21}, {'name': '痊愈', 'value': 21}, {'name': '药物', 'value': 21}, {'name': '下去', 'value': 21}, {'name': '批件', 'value': 21}, {'name': '春节', 'value': 20}, {'name': '心情', 'value': 20}, {'name': '防护', 'value': 20}, {'name': '才能', 'value': 20}, {'name': '拒绝', 'value': 20}, {'name': '一家', 'value': 20}, {'name': '视频【', 'value': 20}, {'name': '怎样', 'value': 20}, {'name': '期间', 'value': 20}, {'name': '最好', 'value': 20}, {'name': '手机', 'value': 20}, {'name': '社会', 'value': 20}, {'name': '监测', 'value': 20}, {'name': '医务人员', 'value': 20}, {'name': '根据', 'value': 20}, {'name': '本次', 'value': 20}, {'name': '上呼吸道', 'value': 20}, {'name': '同性恋', 'value': 20}, {'name': '哥哥', 'value': 20}, {'name': '外婆', 'value': 20}, {'name': '产品', 'value': 20}, {'name': '喝水', 'value': 20}, {'name': '卫生署', 'value': 20}, {'name': '针对', 'value': 20}, {'name': '小心', 'value': 19}, {'name': '别的', 'value': 19}, {'name': '哈哈哈', 'value': 19}, {'name': '外面', 'value': 19}, {'name': '帮助', 'value': 19}, {'name': '看病', 'value': 19}, {'name': '传播', 'value': 19}, {'name': '手术', 'value': 19}, {'name': '抗生素', 'value': 19}, {'name': '愿意', 'value': 19}, {'name': '千万别', 'value': 19}, {'name': '来看', 'value': 19}, {'name': '考虑', 'value': 19}, {'name': '指出', 'value': 19}, {'name': '厚生', 'value': 19}, {'name': '劳动', 'value': 19}, {'name': '社区', 'value': 19}, {'name': '眼泪', 'value': 19}, {'name': '最新消息', 'value': 19}, {'name': '重视', 'value': 19}, {'name': '提前', 'value': 19}, {'name': '处理', 'value': 19}, {'name': '估计', 'value': 19}, {'name': '配合', 'value': 19}, {'name': '遇到', 'value': 19}, {'name': '高发', 'value': 19}, {'name': '学习', 'value': 19}, {'name': '称系', 'value': 19}, {'name': '要是', 'value': 19}, {'name': '不少', 'value': 19}, {'name': '平平安安', 'value': 19}, {'name': '郑月', 'value': 19}, {'name': '幼儿园', 'value': 19}, {'name': '部分', 'value': 19}, {'name': '游客', 'value': 19}, {'name': '上市', 'value': 19}, {'name': '炎症', 'value': 19}, {'name': '流行', 'value': 19}, {'name': '水痘', 'value': 19}, {'name': '沃森', 'value': 19}, {'name': '王冠', 'value': 19}, {'name': '政府', 'value': 18}, {'name': '人家', 'value': 18}, {'name': '住院治疗', 'value': 18}, {'name': '甲流', 'value': 18}, {'name': '那些', 'value': 18}, {'name': '难过', 'value': 18}, {'name': '完全', 'value': 18}, {'name': '以前', 'value': 18}, {'name': '用药', 'value': 18}, {'name': '居然', 'value': 18}, {'name': '辛苦', 'value': 18}, {'name': '日常', 'value': 18}, {'name': '哪里', 'value': 18}, {'name': '记录', 'value': 18}, {'name': '大概', 'value': 18}, {'name': '无法', 'value': 18}, {'name': '人生', 'value': 18}, {'name': '诊室', 'value': 18}, {'name': '左右', 'value': 18}, {'name': '抗体', 'value': 18}, {'name': '分钟', 'value': 18}, {'name': '19', 'value': 18}, {'name': '病房', 'value': 18}, {'name': '快快', 'value': 18}, {'name': '立马', 'value': 18}, {'name': '采购', 'value': 18}, {'name': '采取', 'value': 18}, {'name': '。武汉', 'value': 18}, {'name': '尤其', 'value': 18}, {'name': '地震', 'value': 18}, {'name': '功能', 'value': 18}, {'name': '康复', 'value': 18}, {'name': '进入', 'value': 18}, {'name': '商家', 'value': 18}, {'name': '38', 'value': 18}, {'name': '于是', 'value': 18}, {'name': '澎湃', 'value': 18}, {'name': '港府', 'value': 18}, {'name': '门诊', 'value': 18}, {'name': '不但', 'value': 18}, {'name': '爱死病', 'value': 18}, {'name': '天突穴', 'value': 18}, {'name': '生长激素', 'value': 18}, {'name': '相信', 'value': 17}, {'name': '造成', 'value': 17}, {'name': '身高', 'value': 17}, {'name': '爸爸妈妈', 'value': 17}, {'name': '必要', 'value': 17}, {'name': '不管', 'value': 17}, {'name': '顺利', 'value': 17}, {'name': '只要', 'value': 17}, {'name': '喉咙', 'value': 17}, {'name': '抵抗力', 'value': 17}, {'name': '温度', 'value': 17}, {'name': '一边', 'value': 17}, {'name': '毕竟', 'value': 17}, {'name': '决定', 'value': 17}, {'name': '链接武汉', 'value': 17}, {'name': '安排', 'value': 17}, {'name': '存在', 'value': 17}, {'name': '十一', 'value': 17}, {'name': '鼻涕', 'value': 17}, {'name': '哮喘', 'value': 17}, {'name': '儿科', 'value': 17}, {'name': '免疫', 'value': 17}, {'name': '这里', 'value': 17}, {'name': '受到', 'value': 17}, {'name': '放在', 'value': 17}, {'name': '并且', 'value': 17}, {'name': '新生儿', 'value': 17}, {'name': '程度', 'value': 17}, {'name': '白天', 'value': 17}, {'name': '带来', 'value': 17}, {'name': '异常', 'value': 17}, {'name': '退烧药', 'value': 17}, {'name': '乐队', 'value': 17}, {'name': '流行性', 'value': 17}, {'name': '大多数', 'value': 17}, {'name': '国际', 'value': 17}, {'name': '罪魁祸首', 'value': 17}, {'name': '检疫', 'value': 17}, {'name': '化验', 'value': 17}, {'name': '良好', 'value': 17}, {'name': '退赛', 'value': 17}, {'name': '行走', 'value': 16}, {'name': '度过', 'value': 16}, {'name': '人员', 'value': 16}, {'name': '保护', 'value': 16}, {'name': '可怜', 'value': 16}, {'name': '几乎', 'value': 16}, {'name': '第一天', 'value': 16}, {'name': '免疫力', 'value': 16}, {'name': '天气', 'value': 16}, {'name': '！【', 'value': 16}, {'name': '哭闹', 'value': 16}, {'name': '活动', 'value': 16}, {'name': '加重', 'value': 16}, {'name': '聚集', 'value': 16}, {'name': '一个月', 'value': 16}, {'name': '澳大利亚', 'value': 16}, {'name': '当地', 'value': 16}, {'name': '负责', 'value': 16}, {'name': '找到', 'value': 16}, {'name': '。我', 'value': 16}, {'name': '患儿', 'value': 16}, {'name': '呕吐', 'value': 16}, {'name': '谢谢', 'value': 16}, {'name': '能够', 'value': 16}, {'name': '打电话', 'value': 16}, {'name': '我家', 'value': 16}, {'name': '根本', 'value': 16}, {'name': '说明', 'value': 16}, {'name': '确实', 'value': 16}, {'name': '公众', 'value': 16}, {'name': '处于', 'value': 16}, {'name': '显示', 'value': 16}, {'name': '疾控', 'value': 16}, {'name': '选择', 'value': 16}, {'name': '婴儿', 'value': 16}, {'name': '伊朗', 'value': 16}, {'name': '病患', 'value': 16}, {'name': '非典型', 'value': 16}, {'name': '判断', 'value': 16}, {'name': '人心惶惶', 'value': 16}, {'name': '打喷嚏', 'value': 16}, {'name': '大人', 'value': 16}, {'name': '具有', 'value': 16}, {'name': '体质', 'value': 16}, {'name': '崩溃', 'value': 16}, {'name': '原来', 'value': 16}, {'name': '成为', 'value': 16}, {'name': '多糖', 'value': 16}, {'name': '瘟疫', 'value': 16}, {'name': '这名', 'value': 16}, {'name': '76', 'value': 16}, {'name': '687', 'value': 16}, {'name': '神奈川县', 'value': 16}, {'name': '哭声', 'value': 16}, {'name': '第二', 'value': 15}, {'name': '厘米', 'value': 15}, {'name': '时差', 'value': 15}, {'name': '？#', 'value': 15}, {'name': '之间', 'value': 15}, {'name': '床上', 'value': 15}, {'name': '确定', 'value': 15}, {'name': '路上', 'value': 15}, {'name': '下降', 'value': 15}, {'name': '姥姥', 'value': 15}, {'name': '算是', 'value': 15}, {'name': '天天', 'value': 15}, {'name': '听到', 'value': 15}, {'name': '现场', 'value': 15}, {'name': '不适', 'value': 15}, {'name': '截止', 'value': 15}, {'name': '不停', 'value': 15}, {'name': '积极', 'value': 15}, {'name': '变成', 'value': 15}, {'name': '公开', 'value': 15}, {'name': '整个', 'value': 15}, {'name': '挂水', 'value': 15}, {'name': '然而', 'value': 15}, {'name': '扎针', 'value': 15}, {'name': '十分', 'value': 15}, {'name': '放心', 'value': 15}, {'name': '说话', 'value': 15}, {'name': '成长', 'value': 15}, {'name': '湿疹', 'value': 15}, {'name': '采访', 'value': 15}, {'name': '空气', 'value': 15}, {'name': '男性', 'value': 15}, {'name': '皮肤', 'value': 15}, {'name': '查看', 'value': 15}, {'name': '另外', 'value': 15}, {'name': '媒体', 'value': 15}, {'name': '声明', 'value': 15}, {'name': '京报', 'value': 15}, {'name': '全面', 'value': 15}, {'name': '呼吁', 'value': 15}, {'name': '可控', 'value': 15}, {'name': '总体', 'value': 15}, {'name': '凌晨', 'value': 15}, {'name': '去过', 'value': 15}, {'name': '评估', 'value': 15}, {'name': '呼吸系统', 'value': 15}, {'name': '第一个', 'value': 15}, {'name': '人数', 'value': 15}, {'name': '过程', 'value': 15}, {'name': '防范', 'value': 15}, {'name': '未来', 'value': 15}, {'name': '爷爷奶奶', 'value': 15}, {'name': '绅士', 'value': 15}, {'name': '队友', 'value': 15}, {'name': '疱疹', 'value': 15}, {'name': '迟彦', 'value': 15}, {'name': '了#', 'value': 14}, {'name': '67.08', 'value': 14}, {'name': '组委会', 'value': 14}, {'name': '证实', 'value': 14}, {'name': '那里', 'value': 14}, {'name': '国外', 'value': 14}, {'name': '爸妈', 'value': 14}, {'name': '链接我', 'value': 14}, {'name': '环境', 'value': 14}, {'name': '生日', 'value': 14}, {'name': '总是', 'value': 14}, {'name': '小时候', 'value': 14}, {'name': '自然', 'value': 14}, {'name': '很快', 'value': 14}, {'name': '旅游', 'value': 14}, {'name': '此前', 'value': 14}, {'name': '动物', 'value': 14}, {'name': '为主', 'value': 14}, {'name': '来源', 'value': 14}, {'name': '段时间', 'value': 14}, {'name': '下面', 'value': 14}, {'name': '老人', 'value': 14}, {'name': '期待', 'value': 14}, {'name': '后面', 'value': 14}, {'name': '四个', 'value': 14}, {'name': '眼睛', 'value': 14}, {'name': '颗粒', 'value': 14}, {'name': '想要', 'value': 14}, {'name': '折腾', 'value': 14}, {'name': '流感疫苗', 'value': 14}, {'name': '科学', 'value': 14}, {'name': '链球菌', 'value': 14}, {'name': '100', 'value': 14}, {'name': '查出', 'value': 14}, {'name': '来到', 'value': 14}, {'name': '资讯', 'value': 14}, {'name': '冬天', 'value': 14}, {'name': '回到', 'value': 14}, {'name': '合胞', 'value': 14}, {'name': '呼吸困难', 'value': 14}, {'name': '体征', 'value': 14}, {'name': '年龄', 'value': 14}, {'name': '保险', 'value': 14}, {'name': '感受', 'value': 14}, {'name': '可能性', 'value': 14}, {'name': '致命', 'value': 14}, {'name': '它们', 'value': 14}, {'name': '病程', 'value': 14}, {'name': '过敏', 'value': 14}, {'name': '女性', 'value': 14}, {'name': '腹泻', 'value': 14}, {'name': '案例', 'value': 14}, {'name': '麻疹', 'value': 14}, {'name': '善良', 'value': 14}, {'name': '扁桃体', 'value': 14}, {'name': '周末', 'value': 14}, {'name': '咽炎', 'value': 14}, {'name': '接获', 'value': 14}, {'name': '药业', 'value': 14}, {'name': '临时', 'value': 14}, {'name': '果然', 'value': 13}, {'name': '一只', 'value': 13}, {'name': '重新', 'value': 13}, {'name': '肚子', 'value': 13}, {'name': '不让', 'value': 13}, {'name': '有没有', 'value': 13}, {'name': '可爱', 'value': 13}, {'name': '变化', 'value': 13}, {'name': '等到', 'value': 13}, {'name': '第二次', 'value': 13}, {'name': '差不多', 'value': 13}, {'name': '中医', 'value': 13}, {'name': '想着', 'value': 13}, {'name': '考试', 'value': 13}, {'name': '居住', 'value': 13}, {'name': '你好', 'value': 13}, {'name': '当然', 'value': 13}, {'name': '刚刚', 'value': 13}, {'name': '单位', 'value': 13}, {'name': '附近', 'value': 13}, {'name': '出生', 'value': 13}, {'name': '科技', 'value': 13}, {'name': '一句', 'value': 13}, {'name': '最新进展', 'value': 13}, {'name': '爱问', 'value': 13}, {'name': '80%', 'value': 13}, {'name': '工作人员', 'value': 13}, {'name': '四天', 'value': 13}, {'name': '气管', 'value': 13}, {'name': '就算', 'value': 13}, {'name': '点击', 'value': 13}, {'name': '明白', 'value': 13}, {'name': '一件', 'value': 13}, {'name': '电话', 'value': 13}, {'name': '那种', 'value': 13}, {'name': '广泛', 'value': 13}, {'name': '中东', 'value': 13}, {'name': '慢性', 'value': 13}, {'name': '真正', 'value': 13}, {'name': '方案', 'value': 13}, {'name': '核酸', 'value': 13}, {'name': '实验室', 'value': 13}, {'name': '综合', 'value': 13}, {'name': '公共卫生', 'value': 13}, {'name': '卫生防护', 'value': 13}, {'name': '提醒', 'value': 13}, {'name': '感染性', 'value': 13}, {'name': '）【', 'value': 13}, {'name': '幸福', 'value': 13}, {'name': '危险', 'value': 13}, {'name': '里面', 'value': 13}, {'name': '离开', 'value': 13}, {'name': '服务', 'value': 13}, {'name': '愿望', 'value': 13}, {'name': '爆料', 'value': 13}, {'name': '实施', 'value': 13}, {'name': '机制', 'value': 13}, {'name': '歌手', 'value': 13}, {'name': '样子', 'value': 13}, {'name': '发炎', 'value': 13}, {'name': '头孢', 'value': 13}, {'name': '抵达', 'value': 13}, {'name': '陆续', 'value': 13}, {'name': '回国', 'value': 13}, {'name': '丁香', 'value': 13}, {'name': '消毒', 'value': 12}, {'name': '低烧', 'value': 12}, {'name': '看见', 'value': 12}, {'name': '小宝', 'value': 12}, {'name': '民众', 'value': 12}, {'name': '放假', 'value': 12}, {'name': '特殊', 'value': 12}, {'name': '情绪', 'value': 12}]
                 }]
             }
-
         }
     }
 
+    componentDidMount() {
+        axios.get(`http://localhost:8080/area`)
+            .then((response) => {
+                const currentNcovData = response["data"];
+                this.setState({currentNcovData: currentNcovData});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     render() {
+        const {currentNcovData} = this.state;
         return(
             <div className="mrbox_top_right">
-                <div className="arightboxtop"><h2 className="tith2">各省疫情数据</h2>
+                <div className="arightboxtop"><h2 className="tith2">各省疫情最新数据</h2>
+                    <li>
+                        <span>排名</span>
+                        <span>省份</span>
+                        <span>确诊</span>
+                        <span>疑似</span>
+                        <span>死亡</span>
+                    </li>
+                    {
+                        currentNcovData["provinceName"].map((item, index) => {
+                            return(
+                                <li key={index}>
+                                    <span className="order">{index + 1}</span>
+                                    <span>{item.slice(0,2)}</span>
+                                    <span>{currentNcovData["currentConfirmedCount"][index]["value"]}</span>
+                                    <span>{currentNcovData["suspectedCount"][index]["value"]}</span>
+                                    <span>{currentNcovData["deadCount"][index]["value"]}</span>
+                                </li>
+                            )
+                        })
 
+                    }
                 </div>
                 <div className="arightboxbott"><h2 className="tith2 ">疫情词云</h2>
                     <MyEchart id="aleftboxtmiddr" className="arightboxbottcont2" option={this.state.option2} />

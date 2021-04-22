@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=WYbWDwS8NW7EuxFGqhdYlsF120PhYdSn&__ec_v__=20190126"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+</head>
+<body>
+<!--https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/data/hangzhou-tracks.json-->
+<div id="map" style="width: 100%;height: 800px;"></div>
+<script>
+    var myChart = echarts.init(document.getElementById('map'));
+    //https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/data/hangzhou-tracks.json
+
+    $.ajax({
+        url: 'http://localhost:8080/中华人民共和国.json',
+        success: function (data) {
+            echarts.registerMap("China", data);
+            myChart.setOption(option = {
+                bmap: {
+                    center: [104.114129, 37.550339],
+                    zoom: 5,
+                    roam: true,
+                    mapStyle: {
+                        styleJson: [
+                            {
+                                "featureType": "water",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#044161"
+                                }
+                            },
+                            {
+                                "featureType": "land",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#004981"
+                                }
+                            },
+                            {
+                                "featureType": "boundary",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#064f85"
+                                }
+                            },
+                            {
+                                "featureType": "railway",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "highway",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#004981"
+                                }
+                            },
+                            {
+                                "featureType": "highway",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#005b96",
+                                    "lightness": 1
+                                }
+                            },
+                            {
+                                "featureType": "highway",
+                                "elementType": "labels",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "arterial",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#004981"
+                                }
+                            },
+                            {
+                                "featureType": "arterial",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#00508b"
+                                }
+                            },
+                            {
+                                "featureType": "poi",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "green",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#056197",
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "subway",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "manmade",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "local",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "arterial",
+                                "elementType": "labels",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "boundary",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#029fd4"
+                                }
+                            },
+                            {
+                                "featureType": "building",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#1a5787"
+                                }
+                            },
+                            {
+                                "featureType": "label",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            }
+                        ]
+                    }
+                },
+                visualMap: {
+                    type: 'piecewise',
+                    inRange: {
+                        color: ['#FFE8E8', '#E03355', '#95002F'],
+                        symbolSize: [30, 100]
+                    },
+                    pieces: [
+                        {min: 50000}, // 不指定 max，表示 max 为无限大（Infinity）。
+                        {min: 1000, max: 4999},
+                        {min: 500, max: 999},
+                        {min: 100, max: 499},
+                        {min: 10, max: 99},
+                        // {value: 123, label: '123（自定义特殊颜色）', color: 'grey'}, // 表示 value 等于 123 的情况。
+                        {max: 9}     // 不指定 min，表示 min 为无限大（-Infinity）。
+                    ],
+                    textStyle: {
+                        color: 'white'
+                    }
+
+                },
+                series: [{
+                    type: 'map',
+                    map: 'China',
+                    center: [104.114129, 37.550339],
+                    data: [
+                        {
+                            "name": "香港",
+                            "value": 11128
+                        },
+                        {
+                            "name": "广东省",
+                            "value": 2238
+                        },
+                        {
+                            "name": "四川省",
+                            "value": 927
+                        },
+                        {
+                            "name": "上海市",
+                            "value": 1825
+                        },
+                        {
+                            "name": "台湾",
+                            "value": 978
+                        },
+                        {
+                            "name": "天津市",
+                            "value": 361
+                        },
+                        {
+                            "name": "陕西省",
+                            "value": 558
+                        },
+                        {
+                            "name": "浙江省",
+                            "value": 1322
+                        },
+                        {
+                            "name": "北京市",
+                            "value": 1049
+                        },
+                        {
+                            "name": "河南省",
+                            "value": 1308
+                        },
+                        {
+                            "name": "福建省",
+                            "value": 553
+                        },
+                        {
+                            "name": "湖南省",
+                            "value": 1037
+                        },
+                        {
+                            "name": "云南省",
+                            "value": 234
+                        },
+                        {
+                            "name": "江苏省",
+                            "value": 705
+                        },
+                        {
+                            "name": "内蒙古自治区",
+                            "value": 368
+                        },
+                        {
+                            "name": "山西省",
+                            "value": 241
+                        },
+                        {
+                            "name": "澳门",
+                            "value": 48
+                        },
+                        {
+                            "name": "湖北省",
+                            "value": 68151
+                        },
+                        {
+                            "name": "黑龙江省",
+                            "value": 1610
+                        },
+                        {
+                            "name": "河北省",
+                            "value": 1317
+                        },
+                        {
+                            "name": "安徽省",
+                            "value": 994
+                        },
+                        {
+                            "name": "新疆维吾尔自治区",
+                            "value": 980
+                        },
+                        {
+                            "name": "江西省",
+                            "value": 935
+                        },
+                        {
+                            "name": "山东省",
+                            "value": 869
+                        },
+                        {
+                            "name": "重庆市",
+                            "value": 591
+                        },
+                        {
+                            "name": "吉林省",
+                            "value": 573
+                        },
+                        {
+                            "name": "辽宁省",
+                            "value": 406
+                        },
+                        {
+                            "name": "广西壮族自治区",
+                            "value": 267
+                        },
+                        {
+                            "name": "甘肃省",
+                            "value": 187
+                        },
+                        {
+                            "name": "海南省",
+                            "value": 171
+                        },
+                        {
+                            "name": "贵州省",
+                            "value": 147
+                        },
+                        {
+                            "name": "宁夏回族自治区",
+                            "value": 75
+                        },
+                        {
+                            "name": "青海省",
+                            "value": 18
+                        },
+                        {
+                            "name": "西藏自治区",
+                            "value": 1
+                        }
+                    ],
+                    roam: true,
+                    zoom: 1.5
+                    // coordinateSystem: 'bmap'
+                }]
+                // series: [{
+                //     type: 'lines',
+                //     coordinateSystem: 'bmap',
+                //     data: lines,
+                //     polyline: true,
+                //     lineStyle: {
+                //         color: 'purple',
+                //         opacity: 0.6,
+                //         width: 1
+                //     }
+                // }]
+            });
+        }
+    })
+</script>
+</body>
+</html>
